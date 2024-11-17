@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/socket.io/socket.io.js"></script>
-
-    <title>Structify - Index</title>
-</head>
-<style>
-   :root {
+    <title>Structify - Enterprise Data Solutions</title>
+    <style>
+        :root {
             --primary-color: #2563eb;
             --secondary-color: #1e40af;
             --background-color: #f8fafc;
@@ -28,12 +25,14 @@
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
-            overflow: hidden;
         }
 
         .page-container {
             display: flex;
             min-height: 100vh;
+            justify-content: center;
+            max-width: 1440px;
+            margin: 0 auto;
         }
 
         .ad-space {
@@ -41,6 +40,10 @@
             background: white;
             padding: 20px;
             border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
         }
 
         .ad-space.right {
@@ -59,6 +62,30 @@
             margin-bottom: 20px;
             padding: 10px;
             background: #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        .ad-placeholder:hover {
+            border-color: var(--primary-color);
+            background: #eef2ff;
+            cursor: pointer;
+        }
+
+        .ad-contact {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .ad-contact a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .ad-contact a:hover {
+            text-decoration: underline;
         }
 
         .main-content {
@@ -78,6 +105,7 @@
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .subtitle {
@@ -91,6 +119,12 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px -1px rgb(0 0 0 / 0.1);
         }
 
         .form-group {
@@ -112,6 +146,12 @@
             border-radius: 6px;
             font-size: 16px;
             background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="file"]:hover,
+        select:hover {
+            border-color: var(--primary-color);
         }
 
         select {
@@ -132,16 +172,18 @@
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
         }
 
         button:hover {
             background-color: var(--secondary-color);
+            transform: translateY(-1px);
         }
 
         button:disabled {
             background-color: #94a3b8;
             cursor: not-allowed;
+            transform: none;
         }
 
         .download-section {
@@ -159,9 +201,11 @@
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.2s ease;
         }
 
         #downloadLink a:hover {
+            color: var(--secondary-color);
             text-decoration: underline;
         }
 
@@ -187,7 +231,8 @@
 
             .ad-space {
                 width: 100%;
-                height: 100px;
+                height: auto;
+                position: static;
                 border-right: none;
                 border-bottom: 1px solid var(--border-color);
             }
@@ -198,25 +243,23 @@
             }
 
             .ad-placeholder {
-                height: 100%;
-                margin-bottom: 0;
+                height: 100px;
+                margin-bottom: 10px;
             }
 
             .main-content {
                 padding: 20px;
             }
-        } 
-</style>
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-container">
         <!-- Left Ad Space -->
         <aside class="ad-space">
-            <div class="ad-placeholder"  onclick="window.location.href='mailto:ads@structify.com'">
-            <img src="./img/teradata.png">
-
-               <!-- <p>Premium Ad Space<br>160x600</p> -->
+            <div class="ad-placeholder" onclick="window.location.href='mailto:ads@structify.com'">
+                <p>Premium Ad Space<br>160x600</p>
             </div>
             <div class="ad-contact">
                 <p>Interested in advertising?</p>
@@ -260,9 +303,7 @@
         <!-- Right Ad Space -->
         <aside class="ad-space right">
             <div class="ad-placeholder" onclick="window.location.href='mailto:ads@structify.com'">
-                <img src="./img/temp-ad.png" style="height: 600px; width: 120px; ";">
-
-                <!-- <p>Premium Ad Space<br>160x600</p> -->
+                <p>Premium Ad Space<br>160x600</p>
             </div>
             <div class="ad-contact">
                 <p>Interested in advertising?</p>
@@ -271,11 +312,10 @@
         </aside>
     </div>
 
-
     <script>
+        // Your existing JavaScript code here (unchanged)
         async function initializeAccess() {
             try {
-                // Check if the session is already authenticated
                 if (sessionStorage.getItem('isAuthenticated') !== 'true') {
                     const response = await fetch('/check-session', { method: 'GET' });
 
@@ -285,11 +325,9 @@
 
                     const data = await response.json();
 
-                    // If authenticated, set session storage
                     if (data.isAuthenticated) {
                         sessionStorage.setItem('isAuthenticated', 'true');
                     } else {
-                        // Redirect to login if not authenticated
                         window.location.href = '/login';
                         return;
                     }
@@ -300,79 +338,61 @@
             }
         }
 
-        // Call the function to initialize access based on the isAuthorized
         initializeAccess();
-
-        (async function () {
-    const userDataLink = document.getElementById("user-data-link");
-
-    try {
-        // Fetch the user ID from the backend
-        const userIdResp = await fetch("/get-user-id", { method: "GET" });
-
-        if (!userIdResp.ok) {
-            throw new Error("Failed to fetch user ID");
-        }
-
-        const userData = await userIdResp.json();
-
-        // Populate the link in the <p> element
-        userDataLink.innerHTML = `Access your files <a target="_blank"href="/generated/${userData.userId}/">here</a>`;
-    } catch (error) {
-        console.error("Error fetching user ID:", error);
-        userDataLink.innerHTML = `<p style="color: red;">Error: Could not fetch user files.</p>`;
-    }
-})();
-
-
-
-
 
         const uploadForm = document.getElementById("uploadForm");
         const downloadLink = document.getElementById("downloadLink");
 
         uploadForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+            e.preventDefault();
 
-    const formData = new FormData();
-    const fileInput = document.getElementById("file").files[0];
-    const formatType = document.getElementById("formatType").value;
+            const formData = new FormData();
+            const fileInput = document.getElementById("file").files[0];
+            const formatType = document.getElementById("formatType").value;
 
-    if (!fileInput || !formatType) {
-        alert("Please select a file and a format type.");
-        return;
-    }
+            if (!fileInput || !formatType) {
+                alert("Please select a file and a format type.");
+                return;
+            }
 
+            const userDataLink = document.getElementById("user-data-link");
 
-    const submitButton = uploadForm.querySelector("button[type='submit']");
-    submitButton.disabled = true;
-    submitButton.textContent = "Uploading...";
+            const userIdResp = await fetch("/get-user-id", {
+                method: "GET",
+            });
 
-    alert("Uploading your file. This may take a few minutes...");
-    formData.append("file", fileInput);
-    formData.append("formatType", formatType);
+            const userId = await userIdResp.json();
 
-    try {
-        const response = await fetch("/upload", {
-            method: "POST",
-            body: formData,
+            userDataLink.innerHTML = `User ID: ${userId.userId}`;
+
+            const submitButton = uploadForm.querySelector("button[type='submit']");
+            submitButton.disabled = true;
+            submitButton.textContent = "Processing...";
+
+            alert("Processing your database file. This may take a few minutes...");
+            formData.append("file", fileInput);
+            formData.append("formatType", formatType);
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error("Failed to process file. Your file may be too large. Please try again with a smaller file.");
+                }
+
+                const data = await response.json();
+                downloadLink.innerHTML = `<a href="${data.filePath}" download="${data.fileName}">${data.fileName}</a>`;
+            } catch (error) {
+                console.error("Upload error:", error);
+                downloadLink.innerHTML = `<p style="color: #ef4444;">Error: ${error.message}</p>`;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Process Database";
+            }
         });
-
-        if (!response.ok) {
-            throw new Error("Failed to process file. Your file may be too large. Please try again with a smaller file.");
-        }
-
-        const data = await response.json();
-        downloadLink.innerHTML = `Download: <a href="${data.filePath}" download="${data.fileName}">${data.fileName}</a>`;
-    } catch (error) {
-        console.error("Upload error:", error);
-        downloadLink.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
-    } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = "Upload";
-    }
-});
     </script>
 </body>
-
 </html>
