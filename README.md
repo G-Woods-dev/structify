@@ -22,11 +22,12 @@ Example:
 * HTML/CSS
 * SQLite
 
-### Link to Video Pitch 📹
-**...point us to the short clip that tells us about your solution 😄**
-
-### Link to Demo Presentation 📽
-**...point us to your PPT or Canva slides 😍**
+### How To Setup
+  * Install [NodeJS](https://nodejs.org/en/download/package-manager) for the runtime environment
+  * Download the repository
+  * Run **npm i** to install the necessary packages
+  * run **node .** to activate the process
+  * Go to the link provided in the console **__OR__** Add your own proxy to your webpage
 
 ### Team Checklist ✅
 - [✅ ] Team photo
